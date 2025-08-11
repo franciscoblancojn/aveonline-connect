@@ -1,0 +1,75 @@
+<?php
+/*
+Plugin Name: Aveonline Connect
+Plugin URI: https://github.com/franciscoblancojn/aveonline-connect
+Description: Integración de Aveonline con tu tienda de Wordpress.
+Version: 1.0.0
+Author: franciscoblancojn
+Author URI: https://franciscoblanco.vercel.app/
+License: GPL2+
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: wc-aveonline-connect
+*/
+
+if (!function_exists( 'is_plugin_active' ))
+    require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+
+//AVCONNECT_
+define("AVCONNECT_KEY",'AVCONNECT');
+define("AVCONNECT_LOG",true);
+define("AVCONNECT_BASENAME",plugin_basename(__FILE__));
+define("AVCONNECT_DIR",plugin_dir_path( __FILE__ ));
+define("AVCONNECT_URL",plugin_dir_url(__FILE__));
+
+require_once AVCONNECT_DIR . 'update.php';
+github_updater_plugin_wordpress([
+    'basename'=>AVCONNECT_BASENAME,
+    'dir'=>AVCONNECT_DIR,
+    'file'=>"index.php",
+    'path_repository'=>'franciscoblancojn/aveonline-connect',
+    'branch'=>'master',
+    'token_array_split'=>[
+        "g",
+        "h",
+        "p",
+        "_",
+        "G",
+        "4",
+        "W",
+        "E",
+        "W",
+        "F",
+        "p",
+        "V",
+        "U",
+        "E",
+        "F",
+        "V",
+        "x",
+        "F",
+        "U",
+        "n",
+        "b",
+        "M",
+        "k",
+        "P",
+        "R",
+        "x",
+        "o",
+        "f",
+        "t",
+        "Y",
+        "8",
+        "z",
+        "j",
+        "t",
+        "4",
+        "E",
+        "x",
+        "b",
+        "i",
+        "9"
+    ]
+]);
+
+// require_once AVCONNECT_DIR. 'src/includes/class-admin.php';
