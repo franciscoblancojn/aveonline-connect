@@ -11,65 +11,114 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wc-aveonline-connect
 */
 
-if (!function_exists( 'is_plugin_active' ))
-    require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+if (!function_exists('is_plugin_active'))
+    require_once(ABSPATH . '/wp-admin/includes/plugin.php');
 
 //AVCONNECT_
-define("AVCONNECT_KEY",'AVCONNECT');
-define("AVCONNECT_LOG",true);
-define("AVCONNECT_BASENAME",plugin_basename(__FILE__));
-define("AVCONNECT_DIR",plugin_dir_path( __FILE__ ));
-define("AVCONNECT_URL",plugin_dir_url(__FILE__));
+define("AVCONNECT_KEY", 'AVCONNECT');
+define("AVCONNECT_LOG", true);
+define("AVCONNECT_BASENAME", plugin_basename(__FILE__));
+define("AVCONNECT_DIR", plugin_dir_path(__FILE__));
+define("AVCONNECT_URL", plugin_dir_url(__FILE__));
 
-require_once AVCONNECT_DIR . 'update.php';
-github_updater_plugin_wordpress([
-    'basename'=>AVCONNECT_BASENAME,
-    'dir'=>AVCONNECT_DIR,
-    'file'=>"index.php",
-    'path_repository'=>'franciscoblancojn/aveonline-connect',
-    'branch'=>'master',
-    'token_array_split'=>[
-        "g",
-        "h",
-        "p",
-        "_",
-        "G",
-        "4",
-        "W",
-        "E",
-        "W",
-        "F",
-        "p",
-        "V",
-        "U",
-        "E",
-        "F",
-        "V",
-        "x",
-        "F",
-        "U",
-        "n",
-        "b",
-        "M",
-        "k",
-        "P",
-        "R",
-        "x",
-        "o",
-        "f",
-        "t",
-        "Y",
-        "8",
-        "z",
-        "j",
-        "t",
-        "4",
-        "E",
-        "x",
-        "b",
-        "i",
-        "9"
-    ]
-]);
+function AVCONNECT_get_version()
+{
+    $plugin_data = get_plugin_data(__FILE__);
+    $plugin_version = $plugin_data['Version'];
+    return $plugin_version;
+}
 
-require_once AVCONNECT_DIR. 'src/_index.php';
+
+function AVCONNECT_log_dependencia(String $text)
+{
+?>
+    <div class="notice notice-error is-dismissible">
+        <p>
+            <?= $text ?>
+        </p>
+    </div>
+<?php
+}
+
+function AVCONNECT_required_validations()
+{
+    $requiredValidations = [
+        [
+            "validation" => is_plugin_active('woocommerce/woocommerce.php'),
+            "error" => ('Aveonline Connect requiere the plugin "Woocommerce"')
+        ],
+        [
+            "validation" => (is_callable('curl_init') &&
+                function_exists('curl_init') &&
+                function_exists('curl_close') &&
+                function_exists('curl_exec') &&
+                function_exists('curl_setopt_array')),
+            "error" => ('Aveonline Connect requiere "Curl"')
+        ],
+    ];
+
+    for ($i = 0; $i < count($requiredValidations); $i++) {
+        $vaidation = $requiredValidations[$i]['validation'];
+        $error = $requiredValidations[$i]['error'] ?? '';
+        if (!$vaidation) {
+            add_action('admin_notices', function () use ($error) {
+                AVCONNECT_log_dependencia($error);
+            });
+            return false;
+        }
+    }
+    return true;
+}
+if (AVCONNECT_required_validations()) {
+    require_once AVCONNECT_DIR . 'update.php';
+    github_updater_plugin_wordpress([
+        'basename' => AVCONNECT_BASENAME,
+        'dir' => AVCONNECT_DIR,
+        'file' => "index.php",
+        'path_repository' => 'franciscoblancojn/aveonline-connect',
+        'branch' => 'master',
+        'token_array_split' => [
+            "g",
+            "h",
+            "p",
+            "_",
+            "G",
+            "4",
+            "W",
+            "E",
+            "W",
+            "F",
+            "p",
+            "V",
+            "U",
+            "E",
+            "F",
+            "V",
+            "x",
+            "F",
+            "U",
+            "n",
+            "b",
+            "M",
+            "k",
+            "P",
+            "R",
+            "x",
+            "o",
+            "f",
+            "t",
+            "Y",
+            "8",
+            "z",
+            "j",
+            "t",
+            "4",
+            "E",
+            "x",
+            "b",
+            "i",
+            "9"
+        ]
+    ]);
+    require_once AVCONNECT_DIR . 'src/_index.php';
+}
