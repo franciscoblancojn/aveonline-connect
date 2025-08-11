@@ -72,4 +72,4 @@ github_updater_plugin_wordpress([
     ]
 ]);
 
-// require_once AVCONNECT_DIR. 'src/includes/class-admin.php';
+require_once AVCONNECT_DIR. 'src/_index.php';
