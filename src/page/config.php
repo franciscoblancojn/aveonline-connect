@@ -45,32 +45,42 @@ function AVCONNECT_settings_page()
                 }
             }
             if ($key  === null) {
+                $newApi = [
+                    'active' => $active,
+                    'name' => "AVCONNECT_" . $connect,
+                    'hidden' => 'on',
+                    //PENDING: change de url
+                    'url' => "http://localhost:3005",
+                    'token' => randomToken(),
+                    'permission' => array(
+                        "product_ready" => true,
+                        "product_create" => true,
+                        "product_update" => true,
+                        "product_delete" => true,
+                        "order_ready" => true,
+                        "order_create" => true,
+                        "order_update" => true,
+                        "order_delete" => true,
+                        "user_ready" => false,
+                        "user_create" => false,
+                        "user_update" => false,
+                        "user_delete" => false,
+                    )
+                ];
                 array_push(
                     $apis,
-                    [
-                        'active' => $active,
-                        'name' => "AVCONNECT_" . $connect,
-                        'hidden' => 'on',
-                        'url' => "",
-                        'token' => randomToken(),
-                        'permission' => array(
-                            "product_ready" => true,
-                            "product_create" => true,
-                            "product_update" => true,
-                            "product_delete" => true,
-                            "order_ready" => true,
-                            "order_create" => true,
-                            "order_update" => true,
-                            "order_delete" => true,
-                            "user_ready" => false,
-                            "user_create" => false,
-                            "user_update" => false,
-                            "user_delete" => false,
-                        )
-                    ]
+                    $newApi
                 );
+                CWWYA_alertConnect($newApi);
             } else {
-                $apis[$key]['active'] = $active;
+                if($apis[$key]['active'] != $active){
+                    $apis[$key]['active'] = $active;
+                    if($active == 'on'){
+                        CWWYA_alertConnect($apis[$key]);
+                    }else{
+                        CWWYA_alertDisconnect($apis[$key]);
+                    }
+                }
             }
         }
         CWWYA_set_option("apis", $apis);
@@ -140,7 +150,7 @@ function AVCONNECT_settings_page()
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                 <path d="M160 96C124.7 96 96 124.7 96 160L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 237.3C544 220.3 537.3 204 525.3 192L448 114.7C436 102.7 419.7 96 402.7 96L160 96zM192 192C192 174.3 206.3 160 224 160L384 160C401.7 160 416 174.3 416 192L416 256C416 273.7 401.7 288 384 288L224 288C206.3 288 192 273.7 192 256L192 192zM320 352C355.3 352 384 380.7 384 416C384 451.3 355.3 480 320 480C284.7 480 256 451.3 256 416C256 380.7 284.7 352 320 352z" fill="currentColor" />
             </svg>
-            <?=$is_generated ?"Guardar":"Generar Conexiones"?>
+            <?= $is_generated ? "Guardar" : "Generar Conexiones" ?>
         </button>
     </form>
 <?php
