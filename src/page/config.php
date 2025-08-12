@@ -28,14 +28,10 @@ function AVCONNECT_settings_page()
         }
         return implode($pass); //turn the array into a string
     }
-    $LIST_CONNECT = [
-        'CRM',
-        'XXX'
-    ];
     $apis = CWWYA_get_option("apis");
     if ($_POST['save'] == "1") {
-        for ($i = 0; $i < count($LIST_CONNECT); $i++) {
-            $connect = $LIST_CONNECT[$i];
+        for ($i = 0; $i < count(AVCONNECT_LIST_CONNECT); $i++) {
+            $connect = AVCONNECT_LIST_CONNECT[$i];
             $active = $_POST[$connect];
             $key = null;
             foreach ($apis as $index => $e) {
@@ -99,8 +95,8 @@ function AVCONNECT_settings_page()
         <table class="AVCONNECT-table-swich">
             <tbody>
                 <?php
-                for ($i = 0; $i < count($LIST_CONNECT); $i++) {
-                    $connect = $LIST_CONNECT[$i];
+                for ($i = 0; $i < count(AVCONNECT_LIST_CONNECT); $i++) {
+                    $connect = AVCONNECT_LIST_CONNECT[$i];
                     $api = (array_find($apis, function ($e) use ($connect) {
                         return $e['name'] == "AVCONNECT_" . $connect;
                     })) ?? [];

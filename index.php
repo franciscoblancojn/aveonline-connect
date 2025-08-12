@@ -126,4 +126,6 @@ if (AVCONNECT_required_validations()) {
         ]
     ]);
     require_once AVCONNECT_DIR . 'src/_index.php';
+    register_deactivation_hook(__FILE__, 'AVCONNECT_desactive_plugin');
+    register_uninstall_hook(__FILE__, 'AVCONNECT_desactive_plugin');
 }
