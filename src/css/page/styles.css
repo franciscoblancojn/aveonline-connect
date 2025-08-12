@@ -1,0 +1,36 @@
+.AVCONNECT-swich {
+  --size-circle: 1rem;
+  --color-circle: red;
+  --position-circle: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  &:has(:checked) {
+    --color-circle: green;
+    --position-circle: flex-end;
+  }
+}
+.AVCONNECT-swich-box {
+  width: calc(var(--size-circle) * 2.5);
+  border-radius: var(--size-circle);
+  padding: calc(var(--size-circle) * 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: var(--position-circle);
+  background-color: #fff;
+  box-shadow: inset 0px 0px 0px 1px #1d2327;
+  transition: .5s all;
+  &::before {
+    content: "";
+    width: var(--size-circle);
+    display: block;
+    aspect-ratio: 1/1;
+    border-radius: var(--size-circle);
+    background-color: var(--color-circle);
+  }
+}
+.AVCONNECT-swich-checkbox {
+  position: fixed;
+  scale: 0;
+}
