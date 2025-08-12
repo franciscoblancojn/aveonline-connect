@@ -17,6 +17,17 @@ function register_AVCONNECT_settings()
 
 function AVCONNECT_settings_page()
 {
+    function randomToken()
+    {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        $pass = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 40; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
+        }
+        return implode($pass); //turn the array into a string
+    }
     $LIST_CONNECT = [
         'CRM',
         'XXX'
@@ -25,9 +36,46 @@ function AVCONNECT_settings_page()
     if ($_POST['save'] == "1") {
         for ($i = 0; $i < count($LIST_CONNECT); $i++) {
             $connect = $LIST_CONNECT[$i];
-            $active = $_POST[$connect] == "on";
+            $active = $_POST[$connect];
+            $key = null;
+            foreach ($apis as $index => $e) {
+                if ($e['name'] == "AVCONNECT_" . $connect) {
+                    $key = $index;
+                    // break;
+                }
+            }
+            if ($key  === null) {
+                array_push(
+                    $apis,
+                    [
+                        'active' => $active,
+                        'name' => "AVCONNECT_" . $connect,
+                        'hidden'=>'on',
+                        'url' => "",
+                        'token' => randomToken(),
+                        'permission' => array(
+                            "product_ready" => true,
+                            "product_create" => true,
+                            "product_update" => true,
+                            "product_delete" => true,
+                            "order_ready" => true,
+                            "order_create" => true,
+                            "order_update" => true,
+                            "order_delete" => true,
+                            "user_ready" => false,
+                            "user_create" => false,
+                            "user_update" => false,
+                            "user_delete" => false,
+                        )
+                    ]
+                );
+            } else {
+                $apis[$key]['active'] = $active;
+            }
         }
+        CWWYA_set_option("apis", $apis);
     }
+    // CWWYA_set_option("apis", []);
 ?>
     <form method="post">
         <input type="hidden" name="save" value="1">
@@ -45,7 +93,7 @@ function AVCONNECT_settings_page()
                     $api = (array_find($apis, function ($e) use ($connect) {
                         return $e['name'] == "AVCONNECT_" . $connect;
                     })) ?? [];
-                    $active = false;
+                    $active = $api['active'] == 'on';
                     $token = $api['token'] ?? '';
                 ?>
                     <tr>
@@ -94,7 +142,7 @@ function AVCONNECT_settings_page()
         </button>
     </form>
 <?php
-    var_dump($apis);
-    echo "<br/>";
-    var_dump($_POST);
+    // var_dump($apis);
+    // echo "<br/>";
+    // var_dump($_POST);
 }
