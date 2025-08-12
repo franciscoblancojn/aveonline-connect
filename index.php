@@ -10,7 +10,7 @@ License: GPL2+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wc-aveonline-connect
 */
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) exit;
 
 if (!function_exists('is_plugin_active'))
     require_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -45,6 +45,10 @@ function AVCONNECT_required_validations()
 {
     $requiredValidations = [
         [
+            "validation" => is_plugin_active('connect-woo-with-your-api/connect-woo-with-your-api.php') || is_plugin_active('connect-woo-with-your-api-master/connect-woo-with-your-api.php'),
+            "error" => ('Aveonline Connect requiere the plugin "Connect Woo with your api"')
+        ],
+        [
             "validation" => is_plugin_active('woocommerce/woocommerce.php'),
             "error" => ('Aveonline Connect requiere the plugin "Woocommerce"')
         ],
@@ -57,7 +61,7 @@ function AVCONNECT_required_validations()
             "error" => ('Aveonline Connect requiere "Curl"')
         ],
     ];
-
+    $sw = true;
     for ($i = 0; $i < count($requiredValidations); $i++) {
         $vaidation = $requiredValidations[$i]['validation'];
         $error = $requiredValidations[$i]['error'] ?? '';
@@ -65,10 +69,10 @@ function AVCONNECT_required_validations()
             add_action('admin_notices', function () use ($error) {
                 AVCONNECT_log_dependencia($error);
             });
-            return false;
+            $sw = false;
         }
     }
-    return true;
+    return $sw;
 }
 if (AVCONNECT_required_validations()) {
     require_once AVCONNECT_DIR . 'update.php';
