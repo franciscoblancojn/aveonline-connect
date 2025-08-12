@@ -34,3 +34,21 @@
   position: fixed;
   scale: 0;
 }
+.AVCONNECT-content-copy{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.AVCONNECT-btn.AVCONNECT-btn{
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  svg{
+    width: 1.2rem;
+  }
+}
+.AVCONNECT-table-swich{
+  td{
+    padding-right: 2rem;
+  }
+}
