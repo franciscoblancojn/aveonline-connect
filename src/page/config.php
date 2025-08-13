@@ -3,11 +3,11 @@ function AVCONNECT_create_menu()
 {
     add_menu_page('Aveonline Connect', 'Aveonline Connect', 'administrator', __FILE__, 'AVCONNECT_settings_page', plugins_url('../img/icon.png', __FILE__));
 
-    add_action('admin_init', 'register_AVCONNECT_settings');
+    add_action('admin_init', 'AVCONNECT_register_settings');
 }
 add_action('admin_menu', 'AVCONNECT_create_menu');
 
-function register_AVCONNECT_settings()
+function AVCONNECT_register_settings()
 {
     //register our settings
     register_setting('AVCONNECT-settings-group', 'new_option_name');
@@ -35,7 +35,7 @@ function AVCONNECT_settings_page()
             $active = $_POST[$connect];
             $key = null;
             foreach ($apis as $index => $e) {
-                if ($e['name'] == "AVCONNECT_" . $connect) {
+                if ($e['name'] == AVCONNECT_KEY . $connect) {
                     $key = $index;
                     // break;
                 }
@@ -43,7 +43,7 @@ function AVCONNECT_settings_page()
             if ($key  === null) {
                 $newApi = [
                     'active' => $active,
-                    'name' => "AVCONNECT_" . $connect,
+                    'name' => AVCONNECT_KEY . $connect,
                     'hidden' => 'on',
                     //PENDING: change de url
                     'url' => "http://localhost:3005",
@@ -98,7 +98,7 @@ function AVCONNECT_settings_page()
                 for ($i = 0; $i < count(AVCONNECT_LIST_CONNECT); $i++) {
                     $connect = AVCONNECT_LIST_CONNECT[$i];
                     $api = (array_find($apis, function ($e) use ($connect) {
-                        return $e['name'] == "AVCONNECT_" . $connect;
+                        return $e['name'] == AVCONNECT_KEY . $connect;
                     })) ?? [];
                     $active = $api['active'] == 'on';
                     $token = $api['token'] ?? '';
