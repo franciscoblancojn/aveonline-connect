@@ -8,10 +8,21 @@ class AVCONNECT_api_ave
 
     public function __construct()
     {
-        $this->settings = WC_aveonline_Shipping_Method::$settings;
+        $zones = WC_Shipping_Zones::get_zones();
+        foreach ($zones as $zone) {
+            foreach ($zone['shipping_methods'] as $method) {
+                if ($method->id === 'wc_aveonline_shipping') {
+                    $this->settings = $method->settings;
+                }
+            }
+        }
     }
     public function request(String $url, array $json)
     {
+        // var_dump([
+        //     'url'=>$url,
+        //     'json'=>$json
+        // ]);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
@@ -42,11 +53,12 @@ class AVCONNECT_api_ave
     {
         $json_body = (array(
             "tipo" => "AuthProduct",
-            "usuario" => $this->settings['user'],
-            "clave" => $this->settings['password'],
-            "acceso" => "ecommerce",
-            "tiempoToken" => "100000"
+            "user" => $this->settings['user'],
+            "password" => $this->settings['password'],
+            // "acceso" => "ecommerce",
+            "tokenTime" => "10000"
         ));
+        // var_dump($json_body);
         return $this->request($this->API_URL_AUTHENTICATE, $json_body);
     }
 }

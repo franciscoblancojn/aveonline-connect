@@ -17,14 +17,15 @@ function AVCONNECT_test_register_settings()
 
 function AVCONNECT_test_settings_page()
 {
-    if($_POST['show']=="1"){
-        var_dump($_POST);
+    $api = new AVCONNECT_api_ave();
+    if($_POST['action']=="auth"){
+        var_dump($api->auth());
     }
 ?>
     <form method="post">
-        <input type="hidden" name="show" value="1">
+        <input type="hidden" name="action" value="auth">
         <button class="AVCONNECT-btn button action">
-            Test
+            Test Auth
         </button>
     </form>
 <?php
