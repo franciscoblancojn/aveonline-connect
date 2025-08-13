@@ -90,7 +90,7 @@ function AVCONNECT_settings_page()
             Aveonline Connect
         </h1>
         <p>
-            Aqui puedes configurar las conecxiones entre tu Tienda y Aveonline
+            Aqui puedes configurar las conexiones entre tu Tienda y Aveonline
         </p>
         <table class="AVCONNECT-table-swich">
             <tbody>

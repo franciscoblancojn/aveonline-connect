@@ -45,8 +45,12 @@ function AVCONNECT_required_validations()
 {
     $requiredValidations = [
         [
+            "validation" => is_plugin_active('aveonline/index.php') || is_plugin_active('aveonline-master/index.php'),
+            "error" => ('Aveonline Connect requiere the plugin "Aveonline", download that plugin <a target="blank" href="https://github.com/franciscoblancojn/aveonline-shipping/archive/refs/heads/master.zip">here</a>')
+        ],
+        [
             "validation" => is_plugin_active('connect-woo-with-your-api/connect-woo-with-your-api.php') || is_plugin_active('connect-woo-with-your-api-master/connect-woo-with-your-api.php'),
-            "error" => ('Aveonline Connect requiere the plugin "Connect Woo with your api"')
+            "error" => ('Aveonline Connect requiere the plugin "Connect Woo with your api", download that plugin <a target="blank" href="https://github.com/franciscoblancojn/connect-woo-with-your-api/archive/refs/heads/master.zip">here</a>')
         ],
         [
             "validation" => is_plugin_active('woocommerce/woocommerce.php'),
