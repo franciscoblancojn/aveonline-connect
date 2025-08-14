@@ -19,7 +19,8 @@ function AVCONNECT_test_settings_page()
 {
     $api = new AVCONNECT_api_ave();
     if($_POST['action']=="auth"){
-        var_dump($api->auth());
+        // var_dump($api->auth());
+        echo json_encode($api->auth());
     }
 ?>
     <form method="post">
