@@ -23,7 +23,8 @@ class AVCONNECT_api_base
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => json_encode($json),
             CURLOPT_HTTPHEADER => array(
-                "Content-Type: application/json"
+                "Content-Type: application/json",
+                "Authorization: ".$json['token']
             ),
 
         ));
@@ -32,6 +33,12 @@ class AVCONNECT_api_base
         curl_close($curl);
 
         $response =  json_decode($response,true);
+
+        // echo json_encode([
+        //     "url"=>$url,
+        //     "send"=>$json,
+        //     "result"=>$response
+        // ]);
         return $response;
     }
 }

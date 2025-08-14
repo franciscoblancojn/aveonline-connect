@@ -18,11 +18,9 @@ function AVCONNECT_test_register_settings()
 function AVCONNECT_test_settings_page()
 {
     $api = new AVCONNECT_api_ave();
-    if($_POST['action']=="auth"){
+    if ($_POST['action'] == "auth") {
         // var_dump($api->auth());
-        echo json_encode($api->product->create([
-            
-        ]));
+        echo json_encode($api->product->create(AVCONNECT_parseProductCreate(12)));
     }
 ?>
     <form method="post">
