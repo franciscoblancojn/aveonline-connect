@@ -20,9 +20,10 @@ function AVCONNECT_test_settings_page()
     $api = new AVCONNECT_api_ave();
     if ($_POST['action'] == "auth") {
         // var_dump($api->auth());
-        echo json_encode($api->product->create(AVCONNECT_parseProductCreate(44)));
+        // echo json_encode($api->product->create(AVCONNECT_parseProductCreate(44)));
         // var_dump(AVCONNECT_parseProductUpdate(12));
         // echo json_encode($api->product->update(AVCONNECT_parseProductUpdate(12)));
+        echo json_encode($api->product->get());
     }
 ?>
     <form method="post">

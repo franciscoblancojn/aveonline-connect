@@ -204,4 +204,26 @@ class AVCONNECT_api_ave_product extends AVCONNECT_api_ave_base
             ];
         }
     }
+    public function get()
+    {
+        try {
+
+            // Agregar campos base de autenticación
+            $json_body = array_merge([
+                "tipo"    => "authave",
+                "token"   => $this->user['token'],
+                "empresa" => $this->user['idEnterprise'],
+            ], []);
+
+            // Llamar API
+            $result = $this->request($this->API_URL_PRODUCT_GET_URL, $json_body);
+            return $result;
+        } catch (\Throwable $th) {
+            return [
+                'status'  => 'error',
+                'message' => $th->getMessage(),
+                'error'   => $th
+            ];
+        }
+    }
 }
