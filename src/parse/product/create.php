@@ -9,13 +9,14 @@ function AVCONNECT_parseProductCreate(string $product_id)
 
     // Datos básicos del producto
     $data = [
+        "product_id"             => $product_id,
         "productName"            => $product->get_name(),
         "productDesc"            => $product->get_description(),
         "shortDesc"              => $product->get_short_description(),
         "productRef"             => $product->get_sku() ?: "REF-" . $product_id,
         "referenciaEquivalente"  => $product->get_sku() ?: "REF-" . $product_id,
-        "rate"                   => (float) $product->get_regular_price(),
-        "sugerido"               => (float) $product->get_price(),
+        "rate"                   => (float) ($product->get_regular_price() ?? 0),
+        "sugerido"               => (float) ($product->get_price() ?? 0),
         "productStatus"          => $product->get_status() === 'publish' ? 1 : 2,
         "productImageUrl"        => wp_get_attachment_url($product->get_image_id()) ?: "",
         "peso"                   => (float) $product->get_weight(),
@@ -41,7 +42,7 @@ function AVCONNECT_parseProductCreate(string $product_id)
                 "height"  => (float) $variation->get_height(),
             ];
         }
-    } 
+    }
 
     return $data;
 }
