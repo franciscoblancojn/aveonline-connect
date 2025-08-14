@@ -1,6 +1,6 @@
 <?php
 
-class AVCONNECT_Validator  {
+class AVCONNECT_Validator_Class  {
     private ?string $name = null;
     private $data;
     private array $rules = [];
@@ -128,7 +128,8 @@ class AVCONNECT_Validator  {
 
             return true;
         } catch (Exception $e) {
-            throw $e;
+            // throw $e;
+            throw new Exception("$this->name, ".$e->getMessage());
         }
     }
 
@@ -246,6 +247,6 @@ class AVCONNECT_Validator  {
     }
 }
 
-function AVSHME_Validator(?string $name = null) {
-   return new AVSHME_Validator_Class($name); 
+function AVCONNECT_Validator(?string $name = null) {
+   return new AVCONNECT_Validator_Class($name); 
 }
