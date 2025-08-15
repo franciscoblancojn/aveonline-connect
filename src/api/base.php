@@ -34,11 +34,11 @@ class AVCONNECT_api_base
 
         $response =  json_decode($response,true);
 
-        // echo json_encode([
-        //     "url"=>$url,
-        //     "send"=>$json,
-        //     "result"=>$response
-        // ]);
+        echo json_encode([
+            "url"=>$url,
+            "send"=>$json,
+            "result"=>$response
+        ]);
         return $response;
     }
 }
