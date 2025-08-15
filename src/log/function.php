@@ -9,7 +9,7 @@ function AVCONNECT_getLog()
     $log = json_decode($log,true);
     return $log ;
 }
-function AVCONNECT_addLog($newLog)
+function AVCONNECT_addLog(...$newLog)
 {
     $log = AVCONNECT_getLog();
     $log[] = $newLog;

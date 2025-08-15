@@ -47,6 +47,7 @@ function AVCONNECT_settings_page()
                     'hidden' => 'on',
                     //PENDING: change de url
                     'url' => "http://localhost:3005",
+                    'function' => "AVCONNECT_action",
                     'token' => randomToken(),
                     'permission' => array(
                         "product_ready" => true,
@@ -69,11 +70,11 @@ function AVCONNECT_settings_page()
                 );
                 CWWYA_alertConnect($newApi);
             } else {
-                if($apis[$key]['active'] != $active){
+                if ($apis[$key]['active'] != $active) {
                     $apis[$key]['active'] = $active;
-                    if($active == 'on'){
+                    if ($active == 'on') {
                         CWWYA_alertConnect($apis[$key]);
-                    }else{
+                    } else {
                         CWWYA_alertDisconnect($apis[$key]);
                     }
                 }
