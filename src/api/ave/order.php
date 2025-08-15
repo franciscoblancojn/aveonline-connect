@@ -5,102 +5,68 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
     public function create($data)
     {
         try {
-            // Esquema para las variantes
-            $variantSchema = AVCONNECT_Validator('variant')->isObject([
-                'name' => (AVCONNECT_Validator('name'))->isRequired()->isString(),
-                'sku' => (AVCONNECT_Validator('sku'))->isRequired()->isString(),
-                // 'cost' => (AVCONNECT_Validator('cost'))->isRequired()->isNumber(),
-                'price' => (AVCONNECT_Validator('price'))->isRequired()->isNumber(),
-                // 'suggested_price' => (AVCONNECT_Validator('suggested_price'))->isNumber(),
-                'status' => (AVCONNECT_Validator('status'))->isRequired()->isNumber(),
-                // 'iva' => (AVCONNECT_Validator('iva'))->isRequired()->isNumber(),
-                // 'stock' => (AVCONNECT_Validator('stock'))->isRequired()->isNumber(),
-                'weight' => (AVCONNECT_Validator('weight'))->isNumber(),
-                'length' => (AVCONNECT_Validator('length'))->isNumber(),
-                'width' => (AVCONNECT_Validator('width'))->isNumber(),
-                'height' => (AVCONNECT_Validator('height'))->isNumber(),
-                // 'warehouse' => (AVCONNECT_Validator('warehouse'))->isNumber(),
-                // 'negative_inventory' => (AVCONNECT_Validator('negative_inventory'))->isBoolean(),
-                // 'min_price' => (AVCONNECT_Validator('min_price'))->isNumber(),
-                // 'max_price' => (AVCONNECT_Validator('max_price'))->isNumber(),
-                // 'declared_value' => (AVCONNECT_Validator('declared_value'))->isNumber(),
-                // 'dropshipping_price' => (AVCONNECT_Validator('dropshipping_price'))->isNumber(),
-                // 'additional_references' => (AVCONNECT_Validator('additional_references'))->isArray(
-                //     (AVCONNECT_Validator('ref'))->isString()
-                // ),
+            // Esquema de cada ítem del pedido
+            $itemSchema = AVCONNECT_Validator('item')->isObject([
+                'productRef'       => AVCONNECT_Validator('productRef')->isRequired()->isString(),
+                'rateValue'        => AVCONNECT_Validator('rateValue')->isNumber(),
+                'quantity'         => AVCONNECT_Validator('quantity')->isRequired()->isNumber(),
+                'peso'             => AVCONNECT_Validator('peso')->isNumber(),
+                'vol'              => AVCONNECT_Validator('vol')->isNumber(),
+                'descuentoValue'   => AVCONNECT_Validator('descuentoValue')->isNumber(),
+                'descuento'        => AVCONNECT_Validator('descuento')->isNumber(),
+                'numerodescuento'  => AVCONNECT_Validator('numerodescuento')->isNumber(),
+                'declarado'        => AVCONNECT_Validator('declarado')->isNumber(),
+                'totalValue'       => AVCONNECT_Validator('totalValue')->isNumber(),
+                'subTotalValue'    => AVCONNECT_Validator('subTotalValue')->isNumber(),
             ]);
 
-            // Esquema principal
-            $schema = AVCONNECT_Validator('product')->isObject([
-                'product_id' => (AVCONNECT_Validator('product_id'))->isRequired()->isString(),
-                'productName' => (AVCONNECT_Validator('productName'))->isRequired()->isString(),
-                'productRef' => (AVCONNECT_Validator('productRef'))->isRequired()->isString(),
-                'shortDesc' => (AVCONNECT_Validator('shortDesc'))->isString(),
-                // 'warrantyTime' => (AVCONNECT_Validator('warrantyTime'))->isNumber(),
-                // 'warranty' => (AVCONNECT_Validator('warranty'))->isString(),
-                // 'sendConditions' => (AVCONNECT_Validator('sendConditions'))->isString(),
-                // 'costo' => (AVCONNECT_Validator('costo'))->isRequired()->isNumber(),
-                'rate' => (AVCONNECT_Validator('rate'))->isRequired()->isNumber(),
-                'sugerido' => (AVCONNECT_Validator('sugerido'))->isNumber(),
-                'productStatus' => (AVCONNECT_Validator('productStatus'))->isNumber(),
-                // 'categoryName' => (AVCONNECT_Validator('categoryName'))->isNumber(),
-                // 'tax' => (AVCONNECT_Validator('tax'))->isNumber(),
-                // 'productImage' => (AVCONNECT_Validator('productImage')), // puede ser null
-                'productImageUrl' => (AVCONNECT_Validator('productImageUrl'))->isString(),
-                // 'productVideoUrl' => (AVCONNECT_Validator('productVideoUrl'))->isString(),
-                'peso' => (AVCONNECT_Validator('peso'))->isNumber(),
-                'alto' => (AVCONNECT_Validator('alto'))->isNumber(),
-                'ancho' => (AVCONNECT_Validator('ancho'))->isNumber(),
-                'largo' => (AVCONNECT_Validator('largo'))->isNumber(),
-                // 'ubicacion' => (AVCONNECT_Validator('ubicacion'))->isString(),
-                // 'ubicacioncliente' => (AVCONNECT_Validator('ubicacioncliente'))->isString(),
-                // 'minimo' => (AVCONNECT_Validator('minimo'))->isNumber(),
-                // 'brandName' => (AVCONNECT_Validator('brandName'))->isNumber(),
-                // 'marcaName' => (AVCONNECT_Validator('marcaName'))->isNumber(),
-                // 'tallaName' => (AVCONNECT_Validator('tallaName'))->isNumber(),
-                // 'colorName' => (AVCONNECT_Validator('colorName'))->isNumber(),
-                // 'presentacionName' => (AVCONNECT_Validator('presentacionName'))->isNumber(),
-                // 'etiquetasName' => (AVCONNECT_Validator('etiquetasName'))->isString(),
-                // 'declarado' => (AVCONNECT_Validator('declarado'))->isNumber(),
-                // 'priceMin' => (AVCONNECT_Validator('priceMin'))->isNumber(),
-                // 'priceMax' => (AVCONNECT_Validator('priceMax'))->isNumber(),
-                // 'dropshipperPrice' => (AVCONNECT_Validator('dropshipperPrice'))->isNumber(),
-                // 'prepTime' => (AVCONNECT_Validator('prepTime'))->isNumber(),
-                // 'returnConditions' => (AVCONNECT_Validator('returnConditions'))->isString(),
-                // 'bodegaName' => (AVCONNECT_Validator('bodegaName'))->isNumber(),
-                // 'unidades' => (AVCONNECT_Validator('unidades'))->isNumber(),
-                // Aquí variants es un string JSON, lo decodificamos antes de validar
-                'variants' => (AVCONNECT_Validator('variants_array'))
-                    ->isArray($variantSchema),
+            // Esquema principal del pedido
+            $schema = AVCONNECT_Validator('order')->isObject([
+                'numeropedidoExterno'   => AVCONNECT_Validator('numeropedidoExterno')->isString(),
+                'idAgente'              => AVCONNECT_Validator('idAgente')->isRequired()->isNumber(),
+                'items'                 => AVCONNECT_Validator('items')->isRequired()->isArray($itemSchema),
+                'subTotalValue'         => AVCONNECT_Validator('subTotalValue')->isNumber(),
+                'totalAmountValue'      => AVCONNECT_Validator('totalAmountValue')->isNumber(),
+                'paymentCliente'        => AVCONNECT_Validator('paymentCliente')->isRequired()->isNumber(),
+                'recaudo'               => AVCONNECT_Validator('recaudo')->isRequired()->isNumber(),
+                'recaudoValue'          => AVCONNECT_Validator('recaudoValue')->isRequired()->isNumber(),
+                'paymentAsumecosto'     => AVCONNECT_Validator('paymentAsumecosto')->isRequired()->isNumber(),
+                'clientDestino'         => AVCONNECT_Validator('clientDestino')->isRequired()->isString(),
+                'valorEnvio'            => AVCONNECT_Validator('valorEnvio')->isNumber(),
+                'valorEnvioValue'       => AVCONNECT_Validator('valorEnvioValue')->isNumber(),
+                'seloperadorEnvio'      => AVCONNECT_Validator('seloperadorEnvio')->isNumber(),
+                'clientContact'         => AVCONNECT_Validator('clientContact')->isRequired()->isString(),
+                'clientId'              => AVCONNECT_Validator('clientId')->isRequired()->isString(),
+                'clientDir'             => AVCONNECT_Validator('clientDir')->isString(),
+                'clientTel'             => AVCONNECT_Validator('clientTel')->isNumber(),
+                'clientEmail'           => AVCONNECT_Validator('clientEmail')->isString(),
+                'plugin'                => AVCONNECT_Validator('plugin')->isString(),
+                'noGenerarEnvio'        => AVCONNECT_Validator('noGenerarEnvio')->isNumber(),
+                'pagado'                => AVCONNECT_Validator('pagado')->isBoolean(),
+                'enviopropio'           => AVCONNECT_Validator('enviopropio')->isBoolean(),
             ]);
+
+            // Validar datos recibidos
             $schema->validate($data);
 
-            if ($data['variants']) {
-                $data['variants'] = json_encode($data['variants']);
-            }
-
-            $json_body = array_merge(array(
-                "tipo" => "authave",
-                "token" => $this->user['token'],
+            // Armar cuerpo de la petición
+            $json_body = array_merge([
+                "tipo"    => "authave",
+                "token"   => $this->user['token'],
                 "empresa" => $this->user['idEnterprise'],
-            ), $data);
-            $result = $this->request($this->API_URL_ORDER_CREATE_URL, $json_body);
-            // if ($result['createdProductId']) {
-            //     update_post_meta($data['product_id'], AVCONNECT_KEY_ORDER_REF, $result['createdProductId']);
-            // }
-            // if ($result['idproducto']) {
-            //     update_post_meta($data['product_id'], AVCONNECT_KEY_ORDER_REF, $result['idproducto']);
-            // }
+            ], $data);
 
-            return $result;
+            // Hacer request
+            return $this->request($this->API_URL_ORDER_CREATE_URL, $json_body);
         } catch (\Throwable $th) {
             return [
-                'status' => 'error',
-                'message' =>  $th->getMessage(),
-                'error' => $th
+                'status'  => 'error',
+                'message' => $th->getMessage(),
+                'error'   => $th
             ];
         }
     }
+
     public function update($data)
     {
         try {
