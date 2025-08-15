@@ -1,8 +1,7 @@
 <?php
 function AVCONNECT_action($type, $data)  {
-    AVCONNECT_addLog([
-        "test"=>1,
-        $type, 
-        $data
-    ]);
+    if($type == "product_update"){
+        $product_id = $data['id'];
+        AVCONNECT_action_update($product_id);
+    }
 }
