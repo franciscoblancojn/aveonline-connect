@@ -84,13 +84,13 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
                 "token" => $this->user['token'],
                 "empresa" => $this->user['idEnterprise'],
             ), $data);
-            $result = $this->request($this->API_URL_PRODUCT_CREATE_URL, $json_body);
-            if ($result['createdProductId']) {
-                update_post_meta($data['product_id'], AVCONNECT_KEY_PRODUCT_REF, $result['createdProductId']);
-            }
-            if ($result['idproducto']) {
-                update_post_meta($data['product_id'], AVCONNECT_KEY_PRODUCT_REF, $result['idproducto']);
-            }
+            $result = $this->request($this->API_URL_ORDER_CREATE_URL, $json_body);
+            // if ($result['createdProductId']) {
+            //     update_post_meta($data['product_id'], AVCONNECT_KEY_ORDER_REF, $result['createdProductId']);
+            // }
+            // if ($result['idproducto']) {
+            //     update_post_meta($data['product_id'], AVCONNECT_KEY_ORDER_REF, $result['idproducto']);
+            // }
 
             return $result;
         } catch (\Throwable $th) {
@@ -194,7 +194,7 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
             ], $data);
 
             // Llamar API
-            $result = $this->request($this->API_URL_PRODUCT_UPDATE_URL, $json_body);
+            $result = $this->request($this->API_URL_ORDER_UPDATE_URL, $json_body);
             return $result;
         } catch (\Throwable $th) {
             return [
@@ -207,7 +207,6 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
     public function get()
     {
         try {
-
             // Agregar campos base de autenticación
             $json_body = array_merge([
                 "tipo"    => "authave",
@@ -216,7 +215,7 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
             ], []);
 
             // Llamar API
-            $result = $this->request($this->API_URL_PRODUCT_GET_URL, $json_body);
+            $result = $this->request($this->API_URL_ORDER_GET_URL, $json_body);
             return $result;
         } catch (\Throwable $th) {
             return [

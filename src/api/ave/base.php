@@ -10,6 +10,10 @@ class AVCONNECT_api_ave_base extends AVCONNECT_api_base
     protected $API_URL_PRODUCT_CREATE_URL = 'https://app.aveonline.co/avestock/api/createProduct.php';
     protected $API_URL_PRODUCT_UPDATE_URL = 'https://app.aveonline.co/avestock/api/editProduct.php';
 
+    protected $API_URL_ORDER_GET_URL = 'https://app.aveonline.co/avestock/api/fetchOrders.php';
+    protected $API_URL_ORDER_CREATE_URL = 'https://app.aveonline.co/avestock/api/createOrder.php';
+    protected $API_URL_ORDER_UPDATE_URL = 'https://app.aveonline.co/avestock/api/editOrder.php';
+
     public function __construct()
     {
         $zones = WC_Shipping_Zones::get_zones();
