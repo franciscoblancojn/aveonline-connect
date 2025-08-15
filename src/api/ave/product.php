@@ -5,6 +5,7 @@ class AVCONNECT_api_ave_product extends AVCONNECT_api_ave_base
     public function create($data)
     {
         try {
+            $this->onValidateUser();
             // Esquema para las variantes
             $variantSchema = AVCONNECT_Validator('variant')->isObject([
                 'name' => (AVCONNECT_Validator('name'))->isRequired()->isString(),
@@ -104,6 +105,7 @@ class AVCONNECT_api_ave_product extends AVCONNECT_api_ave_base
     public function update($data)
     {
         try {
+            $this->onValidateUser();
             // Esquema para variantes (según la doc)
             $variantSchema = AVCONNECT_Validator('variant')->isObject([
                 'id'                  => (AVCONNECT_Validator('id'))->isNumber(), // opcional
@@ -207,7 +209,7 @@ class AVCONNECT_api_ave_product extends AVCONNECT_api_ave_base
     public function get()
     {
         try {
-
+            $this->onValidateUser();
             // Agregar campos base de autenticación
             $json_body = array_merge([
                 "tipo"    => "authave",

@@ -5,6 +5,7 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
     public function create($data)
     {
         try {
+            $this->onValidateUser();
             // Esquema de cada ítem del pedido
             $itemSchema = AVCONNECT_Validator('item')->isObject([
                 'productRef'       => AVCONNECT_Validator('productRef')->isRequired()->isString(),
@@ -66,10 +67,10 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
             ];
         }
     }
-
     public function update($data)
     {
         try {
+            $this->onValidateUser();
             // Esquema de cada ítem del pedido
             $itemSchema = AVCONNECT_Validator('item')->isObject([
                 'productRef'      => AVCONNECT_Validator('productRef')->isRequired()->isString(),
@@ -85,19 +86,19 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
             // Esquema principal del pedido
             $schema = AVCONNECT_Validator('order')->isObject([
                 'orderId'                => AVCONNECT_Validator('orderId')->isRequired()->isNumber(),
-                'bodegaName'              => AVCONNECT_Validator('bodegaName')->isNumber(),
+                // 'bodegaName'              => AVCONNECT_Validator('bodegaName')->isNumber(),
                 'idAgente'                => AVCONNECT_Validator('idAgente')->isRequired()->isNumber(),
                 'numeropedidoExterno'     => AVCONNECT_Validator('numeropedidoExterno')->isString(),
                 'items'                   => AVCONNECT_Validator('items')->isRequired()->isArray($itemSchema),
                 'subTotalValue'           => AVCONNECT_Validator('subTotalValue')->isNumber(),
-                'vatValue'                => AVCONNECT_Validator('vatValue')->isNumber(),
+                // 'vatValue'                => AVCONNECT_Validator('vatValue')->isNumber(),
                 'totalAmountValue'        => AVCONNECT_Validator('totalAmountValue')->isNumber(),
-                'grandTotalValue'         => AVCONNECT_Validator('grandTotalValue')->isNumber(),
-                'grandTotalVol'           => AVCONNECT_Validator('grandTotalVol')->isNumber(),
-                'grandTotalPeso'          => AVCONNECT_Validator('grandTotalPeso')->isNumber(),
-                'grandTotalUnit'          => AVCONNECT_Validator('grandTotalUnit')->isNumber(),
-                'grandTotalDeclarado'     => AVCONNECT_Validator('grandTotalDeclarado')->isNumber(),
-                'grandTotalDeclaradoValue' => AVCONNECT_Validator('grandTotalDeclaradoValue')->isNumber(),
+                // 'grandTotalValue'         => AVCONNECT_Validator('grandTotalValue')->isNumber(),
+                // 'grandTotalVol'           => AVCONNECT_Validator('grandTotalVol')->isNumber(),
+                // 'grandTotalPeso'          => AVCONNECT_Validator('grandTotalPeso')->isNumber(),
+                // 'grandTotalUnit'          => AVCONNECT_Validator('grandTotalUnit')->isNumber(),
+                // 'grandTotalDeclarado'     => AVCONNECT_Validator('grandTotalDeclarado')->isNumber(),
+                // 'grandTotalDeclaradoValue' => AVCONNECT_Validator('grandTotalDeclaradoValue')->isNumber(),
                 'paymentCliente'          => AVCONNECT_Validator('paymentCliente')->isRequired()->isNumber(),
                 'recaudo'                 => AVCONNECT_Validator('recaudo')->isRequired()->isNumber(),
                 'recaudoValue'            => AVCONNECT_Validator('recaudoValue')->isRequired()->isNumber(),
@@ -105,18 +106,18 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
                 'clientDestino'           => AVCONNECT_Validator('clientDestino')->isRequired()->isString(),
                 'valorEnvio'              => AVCONNECT_Validator('valorEnvio')->isNumber(),
                 'valorEnvioValue'         => AVCONNECT_Validator('valorEnvioValue')->isNumber(),
-                'cadenaEnvio'             => AVCONNECT_Validator('cadenaEnvio')->isString(),
-                'seloperadorEnvio'        => AVCONNECT_Validator('seloperadorEnvio')->isNumber(),
+                // 'cadenaEnvio'             => AVCONNECT_Validator('cadenaEnvio')->isString(),
+                // 'seloperadorEnvio'        => AVCONNECT_Validator('seloperadorEnvio')->isNumber(),
                 'clientContact'           => AVCONNECT_Validator('clientContact')->isRequired()->isString(),
                 'clientId'                => AVCONNECT_Validator('clientId')->isRequired()->isString(),
                 'clientDir'               => AVCONNECT_Validator('clientDir')->isString(),
                 'clientTel'               => AVCONNECT_Validator('clientTel')->isNumber(),
                 'clientEmail'             => AVCONNECT_Validator('clientEmail')->isString(),
-                'nroFactura'              => AVCONNECT_Validator('nroFactura')->isString(),
+                // 'nroFactura'              => AVCONNECT_Validator('nroFactura')->isString(),
                 'plugin'                  => AVCONNECT_Validator('plugin')->isRequired()->isString(),
-                'noEditarEnvio'           => AVCONNECT_Validator('noEditarEnvio')->isNumber(),
-                'revisarCE'               => AVCONNECT_Validator('revisarCE')->isNumber(),
-                'obs'                     => AVCONNECT_Validator('obs')->isString(),
+                // 'noEditarEnvio'           => AVCONNECT_Validator('noEditarEnvio')->isNumber(),
+                // 'revisarCE'               => AVCONNECT_Validator('revisarCE')->isNumber(),
+                // 'obs'                     => AVCONNECT_Validator('obs')->isString(),
                 'pagado'                  => AVCONNECT_Validator('pagado')->isBoolean(),
             ]);
 
@@ -140,10 +141,10 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
             ];
         }
     }
-
     public function get()
     {
         try {
+            $this->onValidateUser();
             // Agregar campos base de autenticación
             $json_body = array_merge([
                 "tipo"    => "authave",

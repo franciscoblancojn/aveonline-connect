@@ -3,7 +3,7 @@
 class AVCONNECT_api_ave_base extends AVCONNECT_api_base
 {
     protected array $settings;
-    protected array $user;
+    protected $user = null;
 
     protected $API_URL_AUTHENTICATE = 'https://app.aveonline.co/api/auth/v3.0/index.php';
     protected $API_URL_PRODUCT_GET_URL = 'https://app.aveonline.co/avestock/api/fetchProducts.php';
@@ -25,5 +25,10 @@ class AVCONNECT_api_ave_base extends AVCONNECT_api_base
             }
         }
     }
-    
+    public function onValidateUser()
+    {
+        if($this->user == null){
+            throw new Exception("User Invalid");
+        }
+    }
 }

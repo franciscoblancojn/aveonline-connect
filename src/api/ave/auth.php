@@ -11,6 +11,7 @@ class AVCONNECT_api_ave_auth extends AVCONNECT_api_ave_base
             "tokenTime" => "10000"
         ));
         $result = $this->request($this->API_URL_AUTHENTICATE, $json_body);
+        $this->user = null;
         if($result && $result['data'] && $result['data']['token']){
             $this->user = $result['data'];
         }
