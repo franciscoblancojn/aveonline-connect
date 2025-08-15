@@ -12,9 +12,6 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
                 'quantity'         => AVCONNECT_Validator('quantity')->isRequired()->isNumber(),
                 'peso'             => AVCONNECT_Validator('peso')->isNumber(),
                 'vol'              => AVCONNECT_Validator('vol')->isNumber(),
-                'descuentoValue'   => AVCONNECT_Validator('descuentoValue')->isNumber(),
-                'descuento'        => AVCONNECT_Validator('descuento')->isNumber(),
-                'numerodescuento'  => AVCONNECT_Validator('numerodescuento')->isNumber(),
                 'declarado'        => AVCONNECT_Validator('declarado')->isNumber(),
                 'totalValue'       => AVCONNECT_Validator('totalValue')->isNumber(),
                 'subTotalValue'    => AVCONNECT_Validator('subTotalValue')->isNumber(),
@@ -38,7 +35,6 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
                 'clientContact'         => AVCONNECT_Validator('clientContact')->isRequired()->isString(),
                 'clientId'              => AVCONNECT_Validator('clientId')->isRequired()->isString(),
                 'clientDir'             => AVCONNECT_Validator('clientDir')->isString(),
-                'clientTel'             => AVCONNECT_Validator('clientTel')->isNumber(),
                 'clientEmail'           => AVCONNECT_Validator('clientEmail')->isString(),
                 'plugin'                => AVCONNECT_Validator('plugin')->isString(),
                 'noGenerarEnvio'        => AVCONNECT_Validator('noGenerarEnvio')->isNumber(),
@@ -56,8 +52,12 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
                 "empresa" => $this->user['idEnterprise'],
             ], $data);
 
-            // Hacer request
-            return $this->request($this->API_URL_ORDER_CREATE_URL, $json_body);
+            $result = $this->request($this->API_URL_ORDER_CREATE_URL, $json_body);
+            if ($result['order_id']) {
+                update_post_meta($data['order_id'], AVCONNECT_KEY_ORDER_REF, $result['order_id']);
+            }
+
+            return $result;
         } catch (\Throwable $th) {
             return [
                 'status'  => 'error',

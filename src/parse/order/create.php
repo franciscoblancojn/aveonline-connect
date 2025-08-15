@@ -51,6 +51,7 @@ function AVCONNECT_parseOrderCreate(int $order_id)
 
     // Construir el array final
     $data = [
+        "order_id"             => (string) $order_id,
         "numeropedidoExterno"  => (string) $order->get_id(),
         "idAgente"             => 10961, // Cambiar por el valor real
         "items"                => $items,
