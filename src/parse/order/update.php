@@ -11,11 +11,13 @@ function AVCONNECT_parseOrderUpdate(int $order_id)
     $remote_order_id = get_post_meta($order_id, AVCONNECT_KEY_ORDER_REF, true);
 
     // Datos base para actualización
+    $city  = $order->get_shipping_city();   // Ciudad de envío
+    $state = $order->get_shipping_state();  // Estado / Departamento de envío
+    $destino = AVSHME_reajuste_code_aveonline(strtoupper($city . " (" . $state . ")"));
     $data = [
         "orderId"                => $remote_order_id,
         "numeropedidoExterno"    => $order->get_order_number(),
         "bodegaName"             => null, // Si lo manejas en meta puedes reemplazarlo
-        "idAgente"               => get_post_meta($order_id, AVCONNECT_KEY_AGENT_ID, true),
         "items"                  => [],
         "subTotalValue"          => (float) $order->get_subtotal(),
         "vatValue"               => (float) $order->get_total_tax(),
@@ -25,12 +27,12 @@ function AVCONNECT_parseOrderUpdate(int $order_id)
         "grandTotalPeso"         => 0,
         "grandTotalUnit"         => (float) $order->get_item_count(),
         "grandTotalDeclarado"    => 0,
-        "grandTotalDeclaradoValue"=> 0,
+        "grandTotalDeclaradoValue" => 0,
         "paymentCliente"         => 1, // o 2 según corresponda
         "recaudo"                => 0,
         "recaudoValue"           => (float) $order->get_total(),
         "paymentAsumecosto"      => 1, // o 2 según corresponda
-        "clientDestino"          => $order->get_shipping_city() . '(' . $order->get_shipping_state() . ')',
+        "clientDestino"          => $destino,
         "valorEnvio"             => 0,
         "valorEnvioValue"        => 0,
         "cadenaEnvio"            => "",

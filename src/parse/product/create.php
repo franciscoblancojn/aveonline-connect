@@ -18,6 +18,7 @@ function AVCONNECT_parseProductCreate(string $product_id)
         "rate"                   => (float) ($product->get_regular_price() ?? 0),
         "sugerido"               => (float) ($product->get_price() ?? 0),
         "productStatus"          => $product->get_status() === 'publish' ? 1 : 2,
+        "unidades"                 => (int) $product->get_stock_quantity(),
         "productImageUrl"        => wp_get_attachment_url($product->get_image_id()) ?: "",
         "peso"                   => (float) $product->get_weight(),
         "alto"                   => (float) $product->get_height(),
@@ -40,6 +41,7 @@ function AVCONNECT_parseProductCreate(string $product_id)
                 "length"  => (float) $variation->get_length(),
                 "width"   => (float) $variation->get_width(),
                 "height"  => (float) $variation->get_height(),
+                "stock"   => (int) $product->get_stock_quantity(),
             ];
         }
     }

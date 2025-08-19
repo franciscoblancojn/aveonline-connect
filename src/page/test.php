@@ -25,9 +25,9 @@ function AVCONNECT_test_settings_page()
         // echo json_encode($api->product->update(AVCONNECT_parseProductUpdate(12)));
 
         // echo json_encode($api->order->get());
-        // echo json_encode($api->order->create(AVCONNECT_parseOrderCreate(117)));
+        // echo json_encode($api->order->create(AVCONNECT_parseOrderCreate(193)));
         // var_dump(get_post_meta(117, AVCONNECT_KEY_ORDER_REF, true));
-        echo json_encode($api->order->update(AVCONNECT_parseOrderUpdate(117)));
+        echo json_encode($api->order->update(AVCONNECT_parseOrderUpdate(193)));
     }
 ?>
     <form method="post">

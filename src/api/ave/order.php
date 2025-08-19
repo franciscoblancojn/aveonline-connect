@@ -87,7 +87,6 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
             $schema = AVCONNECT_Validator('order')->isObject([
                 'orderId'                => AVCONNECT_Validator('orderId')->isRequired()->isNumber(),
                 // 'bodegaName'              => AVCONNECT_Validator('bodegaName')->isNumber(),
-                'idAgente'                => AVCONNECT_Validator('idAgente')->isRequired()->isNumber(),
                 'numeropedidoExterno'     => AVCONNECT_Validator('numeropedidoExterno')->isString(),
                 'items'                   => AVCONNECT_Validator('items')->isRequired()->isArray($itemSchema),
                 'subTotalValue'           => AVCONNECT_Validator('subTotalValue')->isNumber(),
@@ -109,9 +108,9 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
                 // 'cadenaEnvio'             => AVCONNECT_Validator('cadenaEnvio')->isString(),
                 // 'seloperadorEnvio'        => AVCONNECT_Validator('seloperadorEnvio')->isNumber(),
                 'clientContact'           => AVCONNECT_Validator('clientContact')->isRequired()->isString(),
-                'clientId'                => AVCONNECT_Validator('clientId')->isRequired()->isString(),
+                // 'clientId'                => AVCONNECT_Validator('clientId')->isRequired()->isString(),
                 'clientDir'               => AVCONNECT_Validator('clientDir')->isString(),
-                'clientTel'               => AVCONNECT_Validator('clientTel')->isNumber(),
+                // 'clientTel'               => AVCONNECT_Validator('clientTel')->isNumber(),
                 'clientEmail'             => AVCONNECT_Validator('clientEmail')->isString(),
                 // 'nroFactura'              => AVCONNECT_Validator('nroFactura')->isString(),
                 'plugin'                  => AVCONNECT_Validator('plugin')->isRequired()->isString(),
@@ -129,6 +128,7 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
                 "tipo"    => "authave",
                 "token"   => $this->user['token'],
                 "empresa" => $this->user['idEnterprise'],
+                "idAgente"=> $this->user['idAgent'],
             ], $data);
 
             // Llamar API de actualización de orden

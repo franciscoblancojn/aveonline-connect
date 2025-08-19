@@ -34,11 +34,15 @@ class AVCONNECT_api_base
 
         $response =  json_decode($response,true);
 
-        echo json_encode([
+        $data = [
             "url"=>$url,
             "send"=>$json,
             "result"=>$response
-        ]);
+        ];
+
+        AVCONNECT_addLog($data);
+
+        // echo json_encode($data);
         return $response;
     }
 }
