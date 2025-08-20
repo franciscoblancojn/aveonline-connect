@@ -46,34 +46,33 @@ function AVCONNECT_parseOrderCreate(int $order_id)
     // Calcular totales
     $total_amount = (float) $order->get_total();
     $subtotal     = (float) $order->get_subtotal();
-    $total_weight = array_sum(array_column($items, 'peso'));
-    $total_units  = array_sum(array_column($items, 'quantity'));
+
+    $order_request_ave = json_decode(get_post_meta(197, 'AVSHME_generate_guia_request',true),true);
 
     // Construir el array final
     $data = [
         "order_id"             => (string) $order_id,
-        "numeropedidoExterno"  => (string) $order->get_id(),
-        "idAgente"             => 10961, // Cambiar por el valor real
+        "numeropedidoExterno"  => (string) $order_id,
         "items"                => $items,
         "subTotalValue"        => $subtotal,
         "totalAmountValue"     => $total_amount,
-        "paymentCliente"       => 1, // 1=Sí paga cliente
         "recaudo"              => $total_amount,
         "recaudoValue"         => $total_amount,
-        "paymentAsumecosto"    => 1, // 1=Sí
         "clientDestino"        => strtoupper($shipping['city']), // Formato según API
-        "valorEnvio"           => 0, // Puedes poner el costo real si lo tienes
-        "valorEnvioValue"      => 0,
-        "seloperadorEnvio"     => 29, // Cambiar por valor real si aplica
+        "valorEnvio"           => $order->get_shipping_total(), // Puedes poner el costo real si lo tienes
         "clientContact"        => $shipping['name'],
-        "clientId"             => "00000000", // Documento del cliente (añadir si lo tienes)
+        "clientId"             => AVSHME_get_options($order_id, '_cedula'), // Documento del cliente (añadir si lo tienes)
         "clientDir"            => $shipping['address'],
         "clientTel"            => preg_replace('/\D/', '', $shipping['phone']),
         "clientEmail"          => $shipping['email'],
-        "plugin"               => "aveonline",
-        "noGenerarEnvio"       => 0,
-        "pagado"               => false,
+        "valorEnvioValue"      =>  (float) $order->get_shipping_total(),
+        "pagado"               => true,
         "enviopropio"          => false,
+        "noGenerarEnvio"       => 0,
+        "paymentCliente"       => 1, // 1=Sí paga cliente
+        "paymentAsumecosto"    => 1, // 1=Sí
+        "plugin"               => "aveonline",
+        "seloperadorEnvio"     => $order_request_ave['idtransportador'], // Cambiar por valor real si aplica
     ];
 
     return $data;
