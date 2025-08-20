@@ -7,6 +7,7 @@ function AVCONNECT_parseOrderUpdate(int $order_id)
         return null;
     }
     $items = [];
+    /** @var WC_Order_Item_Product $item */
     foreach ($order->get_items() as $item) {
         $product       = $item->get_product();
         $product_id    = $product ? $product->get_id() : 0;
@@ -40,40 +41,33 @@ function AVCONNECT_parseOrderUpdate(int $order_id)
     $city  = $order->get_shipping_city();   // Ciudad de envío
     $state = $order->get_shipping_state();  // Estado / Departamento de envío
     $destino = AVSHME_reajuste_code_aveonline(strtoupper($city . " (" . $state . ")"));
+    $order_request_ave = json_decode(get_post_meta(197, 'AVSHME_generate_guia_request', true), true);
     $data = [
         "orderId"                => $remote_order_id,
         "numeropedidoExterno"    => $order->get_order_number(),
-        "bodegaName"             => null, // Si lo manejas en meta puedes reemplazarlo
         "items"                  => $items,
         "subTotalValue"          => (float) $order->get_subtotal(),
         "vatValue"               => (float) $order->get_total_tax(),
         "totalAmountValue"       => (float) $order->get_total(),
         "grandTotalValue"        => (float) $order->get_total(),
-        "grandTotalVol"          => 0,
-        "grandTotalPeso"         => 0,
         "grandTotalUnit"         => (float) $order->get_item_count(),
-        "grandTotalDeclarado"    => 0,
-        "grandTotalDeclaradoValue" => 0,
         "paymentCliente"         => 1, // o 2 según corresponda
-        "recaudo"                => 0,
-        "recaudoValue"           => (float) $order->get_total(),
         "paymentAsumecosto"      => 1, // o 2 según corresponda
         "clientDestino"          => $destino,
-        "valorEnvio"             => 0,
-        "valorEnvioValue"        => 0,
+        "valorEnvio"             => (float) $order->get_shipping_total(),
+        "valorEnvioValue"        => (float) $order->get_shipping_total(),
         "cadenaEnvio"            => "",
-        "seloperadorEnvio"       => null,
+        "seloperadorEnvio"       => $order_request_ave['idtransportador'],
         "clientContact"          => $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
         "clientId"               => AVSHME_get_options($order_id, '_cedula'), // si tienes documento en meta
         "clientDir"              => $order->get_shipping_address_1(),
         "clientTel"              => preg_replace('/\D/', '', $order->get_billing_phone()),
         "clientEmail"            => $order->get_billing_email(),
-        "nroFactura"             => "",
         "plugin"                 => "aveonline",
-        "noEditarEnvio"          => 0,
-        "revisarCE"              => 0,
         "obs"                    => $order->get_customer_note(),
         "pagado"                 => $order->is_paid(),
+        "recaudo"                => (float) $order->get_total(),
+        "recaudoValue"           => (float) $order->get_total(),
     ];
 
     return $data;

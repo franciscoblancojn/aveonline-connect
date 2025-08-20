@@ -9,6 +9,7 @@ function AVCONNECT_parseOrderCreate(int $order_id)
 
     // Obtener items del pedido
     $items = [];
+    /** @var WC_Order_Item_Product $item */
     foreach ($order->get_items() as $item) {
         $product       = $item->get_product();
         $product_id    = $product ? $product->get_id() : 0;
@@ -47,7 +48,7 @@ function AVCONNECT_parseOrderCreate(int $order_id)
     $total_amount = (float) $order->get_total();
     $subtotal     = (float) $order->get_subtotal();
 
-    $order_request_ave = json_decode(get_post_meta(197, 'AVSHME_generate_guia_request',true),true);
+    $order_request_ave = json_decode(get_post_meta(197, 'AVSHME_generate_guia_request', true), true);
 
     // Construir el array final
     $data = [
