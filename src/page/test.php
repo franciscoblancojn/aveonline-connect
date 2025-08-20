@@ -25,10 +25,11 @@ function AVCONNECT_test_settings_page()
         // echo json_encode($api->product->update(AVCONNECT_parseProductUpdate(12)));
 
         // echo json_encode($api->order->get());
-        // echo json_encode($api->order->create(AVCONNECT_parseOrderCreate(193)));
+        // echo json_encode($api->order->create(AVCONNECT_parseOrderCreate(197)));
         // var_dump(get_post_meta(117, AVCONNECT_KEY_ORDER_REF, true));
-        // echo json_encode($api->order->update(AVCONNECT_parseOrderUpdate(193)));
-        echo get_post_meta(197, 'AVSHME_generate_guia_request',true);
+        echo json_encode($api->order->update(AVCONNECT_parseOrderUpdate(193)));
+        // echo get_post_meta(197, 'AVSHME_generate_guia_request',true);
+        // echo get_post_meta(197, AVCONNECT_KEY_ORDER_REF,true);
     }
 ?>
     <form method="post">

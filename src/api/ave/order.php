@@ -21,7 +21,6 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
             // Esquema principal del pedido
             $schema = AVCONNECT_Validator('order')->isObject([
                 'numeropedidoExterno'   => AVCONNECT_Validator('numeropedidoExterno')->isString(),
-                'idAgente'              => AVCONNECT_Validator('idAgente')->isRequired()->isNumber(),
                 'items'                 => AVCONNECT_Validator('items')->isRequired()->isArray($itemSchema),
                 'subTotalValue'         => AVCONNECT_Validator('subTotalValue')->isNumber(),
                 'totalAmountValue'      => AVCONNECT_Validator('totalAmountValue')->isNumber(),
@@ -51,6 +50,7 @@ class AVCONNECT_api_ave_order extends AVCONNECT_api_ave_base
                 "tipo"    => "authave",
                 "token"   => $this->user['token'],
                 "empresa" => $this->user['idEnterprise'],
+                "idAgente"=> $this->user['idAgent'],
             ], $data);
 
             $result = $this->request($this->API_URL_ORDER_CREATE_URL, $json_body);
