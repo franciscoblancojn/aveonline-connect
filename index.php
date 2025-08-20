@@ -45,37 +45,82 @@ function AVCONNECT_required_validations()
 {
     $requiredValidations = [
         [
-            "validation" => is_plugin_active('aveonline/index.php') || is_plugin_active('aveonline-master/index.php'),
-            "error" => ('Aveonline Connect requiere the plugin "Aveonline", download that plugin <a target="blank" href="https://github.com/franciscoblancojn/aveonline-shipping/archive/refs/heads/master.zip">here</a>')
+            "slug"      => 'aveonline/index.php',
+            "alt_slugs" => ['aveonline-master/index.php'],
+            "min_version" => '3.2.0',
+            "error" => ('Aveonline Connect requiere el plugin "Aveonline" versión 3.2.0 o superior, descarga el plugin <a target="_blank" href="https://github.com/franciscoblancojn/aveonline-shipping/archive/refs/heads/master.zip">aquí</a>')
         ],
         [
-            "validation" => is_plugin_active('connect-woo-with-your-api/connect-woo-with-your-api.php') || is_plugin_active('connect-woo-with-your-api-master/connect-woo-with-your-api.php'),
-            "error" => ('Aveonline Connect requiere the plugin "Connect Woo with your api", download that plugin <a target="blank" href="https://github.com/franciscoblancojn/connect-woo-with-your-api/archive/refs/heads/master.zip">here</a>')
+            "slug"      => 'connect-woo-with-your-api/connect-woo-with-your-api.php',
+            "alt_slugs" => ['connect-woo-with-your-api-master/connect-woo-with-your-api.php'],
+            "min_version" => '1.0.1',
+            "error" => ('Aveonline Connect requiere el plugin "Connect Woo with your api" versión 1.0.1 o superior, descarga el plugin <a target="_blank" href="https://github.com/franciscoblancojn/connect-woo-with-your-api/archive/refs/heads/master.zip">aquí</a>')
         ],
         [
-            "validation" => is_plugin_active('woocommerce/woocommerce.php'),
-            "error" => ('Aveonline Connect requiere the plugin "Woocommerce"')
+            "slug"      => 'woocommerce/woocommerce.php',
+            "min_version" => '10.0.0',
+            "error" => ('Aveonline Connect requiere el plugin "WooCommerce" versión 10.0.0 o superior')
         ],
         [
-            "validation" => (is_callable('curl_init') &&
-                function_exists('curl_init') &&
-                function_exists('curl_close') &&
-                function_exists('curl_exec') &&
-                function_exists('curl_setopt_array')),
-            "error" => ('Aveonline Connect requiere "Curl"')
+            "callback" => function () {
+                return (is_callable('curl_init') &&
+                    function_exists('curl_init') &&
+                    function_exists('curl_close') &&
+                    function_exists('curl_exec') &&
+                    function_exists('curl_setopt_array'));
+            },
+            "error" => ('Aveonline Connect requiere "Curl" habilitado en el servidor')
         ],
     ];
+
     $sw = true;
-    for ($i = 0; $i < count($requiredValidations); $i++) {
-        $vaidation = $requiredValidations[$i]['validation'];
-        $error = $requiredValidations[$i]['error'] ?? '';
-        if (!$vaidation) {
+
+    foreach ($requiredValidations as $validation) {
+        $isValid = false;
+
+        // Validación por callback (ej. curl)
+        if (isset($validation['callback']) && is_callable($validation['callback'])) {
+            $isValid = $validation['callback']();
+        } else {
+            // Validación de plugins
+            $pluginFile = null;
+
+            if (is_plugin_active($validation['slug'])) {
+                $pluginFile = $validation['slug'];
+            } elseif (isset($validation['alt_slugs'])) {
+                foreach ($validation['alt_slugs'] as $alt) {
+                    if (is_plugin_active($alt)) {
+                        $pluginFile = $alt;
+                        break;
+                    }
+                }
+            }
+
+            if ($pluginFile) {
+                // Verificar versión
+                $plugins = get_plugins();
+                if (isset($plugins[$pluginFile])) {
+                    $currentVersion = $plugins[$pluginFile]['Version'];
+                    $minVersion     = $validation['min_version'] ?? null;
+
+                    if ($minVersion) {
+                        $isValid = version_compare($currentVersion, $minVersion, '>=');
+                    } else {
+                        $isValid = true;
+                    }
+                }
+            }
+        }
+
+        if (!$isValid) {
+            $error = $validation['error'] ?? 'Dependencia faltante';
             add_action('admin_notices', function () use ($error) {
                 AVCONNECT_log_dependencia($error);
             });
             $sw = false;
         }
     }
+
     return $sw;
 }
 if (AVCONNECT_required_validations()) {
